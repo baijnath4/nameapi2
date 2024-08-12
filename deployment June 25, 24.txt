@@ -1,0 +1,42 @@
+# Login AZ Accounts
+* download and install - az cli
+* az --version
+* az login --use-device-code # device login access to azure portal through cli command
+
+
+$RESOURCE_GROUP_NAME='BPO_GENAI_DEV_baij'
+$LOCATION='East US'
+$APP_SERVICE_NAME='watsontext'
+
+# Create a resource group
+1. Create a Resource Group
+-> az group create --location $LOCATION --name $RESOURCE_GROUP_NAME
+
+2. Create app service plan
+	-> $APP_SERVICE_PLAN_NAME='asp-testBaij'
+	-> az appservice plan create --name $APP_SERVICE_PLAN_NAME --resource-group $RESOURCE_GROUP_NAME --sku Fl --is-linux
+	   my command - az appservice plan create --name $APP_SERVICE_PLAN_NAME --resource-group $RESOURCE_GROUP_NAME --sku B1 --is-linux
+
+
+3. Create App service web app
+-> $APP_SERVICE_NAME='klarityvirtualpowerbi'
+-> az webapp create --name $APP_SERVICE_PLAN_NAME --runtime 'PYTHON:3.11' --plan $APP_SERVICE_PLAN_NAME --resource-group $RESOURCE_GROUP_NAME --query 'defaultHostName' --output table
+
+
+
+4. Enable Build automation
+-> az webapp config appsettings set --resource-group $RESOURCE_GROUP_NAME --name $APP_SERVICE_NAME --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+
+
+5. Zip file upload
+
+az webapp deploy --name $APP_SERVICE_NAME --resource-group $RESOURCE_GROUP_NAME --src-path "C:\Users\01934L744\Box\Baijnath Data\Project 2024\Jan - June\WatsonX challenge\test\requirements.zip"
+
+
+
+
+6. Stream Logs Configuration
+-> az webapp log config --web-server-logging filesystem --name $APP_SERVICE_NAME --resource-group $RESOURCE_GROUP_NAME
+
+7. Stream the log trail
+-> az webapp log tail --name $APP_SERVICE_NAME --resource-group $RESOURCE_GROUP_NAME
